@@ -17,13 +17,18 @@ class Search(object):
         return self.__search(state, self.assumption)
 
     def __search(self, state, previous_assumption):
-        possible_states, is_valid = self.Solver.solve(state)
+        state, possible_states, is_valid = self.Solver.solve(state)
+
         if not is_valid:
+            return
+
+        if possible_states is None:
+            self.solutions.append(state)
+            print('Solution')
+            print(state)
             return
 
         # Explore the possible states
         for current_state in possible_states:
             current_assumption = Assumption(current_state, previous_assumption)
             self.__search(current_state, current_assumption)
-        else:
-            self.solutions.append(state)
