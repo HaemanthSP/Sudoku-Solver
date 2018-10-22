@@ -17,13 +17,13 @@ Solver module:
 Search module:
 1. Should choose the next move from the possible moves
 2. Should go deeper when the move is valid
-3. Should backtrack when the state of the board becmones invalid
+3. Should backtrack when the state of the board becomes invalid
 
 
 ## Input
 
 Create an `input.txt` file with sudoku 9x9 puzzle
-Create a grid of space speparated values use '0' for empty cells
+Create a grid of space separated values use '0' for empty cells
 ```
 For example:
 4 0 0 8 0 0 7 0 0

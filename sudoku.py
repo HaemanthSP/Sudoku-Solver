@@ -21,7 +21,7 @@ class SudokuSolver(object):
 
     def solve(self, state):
         '''
-        Solve untill the decisions are certain and valid
+        Solve until the decisions are certain and valid
         '''
         self.is_valid = True
         while True:
@@ -195,13 +195,10 @@ if __name__ == '__main__':
     one_hot = np.eye(9)
 
     # Gets board data from input file
-    with open(args.input_file, 'r') as input_file:
-        table_data_str = input_file.readlines()
-    data = np.zeros(shape=(9, 9))
-    for i, row_str in zip(range(9), table_data_str):
-        data[i] = np.array(map(int, row_str.strip().split(' ')))
+    data = utils.read_input_from_file(args.input_file)
     log.info('Input board: \n%s', utils.get_pretty_board(data))
 
+    # Solves the puzzle
     solver = Search(SudokuSolver())
     solver.search(data)
     log.info('Number of possible solutions: %d', len(solver.solutions))
