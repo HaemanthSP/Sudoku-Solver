@@ -1,7 +1,5 @@
 '''
-Solves the 9x9 sudoku puzzle
-Also provides all possible solutions for puzzle with 
-many solution
+Provides all possible solution for the incomplete 9x9 sudoku board
 '''
 
 # Built-in modules
@@ -14,6 +12,7 @@ import numpy as np
 
 # Local modules
 from search import Search
+import utils
 
 
 class SudokuSolver(object):
@@ -52,24 +51,28 @@ class SudokuSolver(object):
             uniq_locs = np.where(np.sum(column, axis=1) == 1)[0]
             for l in uniq_locs:
                 value = np.where(option_table[l][i] == 1)[0][0] + 1
-                new_data, option_table = self.update(new_data, option_table, l, i, value)
+                new_data, option_table = self.update(
+                        new_data, option_table, l, i, value)
 
             uniq_vals = np.where(np.sum(column, axis=0) == 1)[0]
             for v in uniq_vals:
                 idx = np.where(column[:, v] == 1)[0][0]
-                new_data, option_table = self.update(new_data, option_table, idx, i, v+1)
+                new_data, option_table = self.update(
+                        new_data, option_table, idx, i, v+1)
 
             # Fill by row 
             row = option_table[i, :]
             uniq_locs = np.where(np.sum(row, axis=1) == 1)[0]
             for l in uniq_locs:
                 value = np.where(option_table[i][l] == 1)[0][0] + 1
-                new_data, option_table = self.update(new_data, option_table, i, l, value)
+                new_data, option_table = self.update(
+                        new_data, option_table, i, l, value)
 
             uniq_vals = np.where(np.sum(row, axis=0) == 1)[0]
             for v in uniq_vals:
                 idx = np.where(row[:, v] == 1)[0][0]
-                new_data, option_table = self.update(new_data, option_table, i, idx, v+1)
+                new_data, option_table = self.update(
+                        new_data, option_table, i, idx, v+1)
 
         # Fill all the 3x3 squares
         for x in range(3):
@@ -81,14 +84,16 @@ class SudokuSolver(object):
                     xid = (x*3)+(l/3)
                     yid = (y*3)+(l % 3)
                     value = np.where(option_table[xid][yid] == 1)[0][0] + 1
-                    new_data, option_table = self.update(new_data, option_table, xid, yid, value)
+                    new_data, option_table = self.update(
+                            new_data, option_table, xid, yid, value)
 
                 uniq_vals = np.where(np.sum(square, axis=0) == 1)[0]
                 for v in uniq_vals:
                     idx = np.where(square[:, v] == 1)[0][0]
                     xid = (x*3)+(idx/3)
                     yid = (y*3)+(idx % 3)
-                    new_data, option_table = self.update(new_data, option_table, xid, yid, v+1)
+                    new_data, option_table = self.update(
+                            new_data, option_table, xid, yid, v+1)
 
         return new_data
 
@@ -100,8 +105,8 @@ class SudokuSolver(object):
         entries_along_column = state[x, :]
         entries_within_3x3 = state[(x/3)*3:((x/3)+1)*3,
                 (y/3)*3:((y/3)+1)*3].flatten()
-        invalid_entries = list(reduce(np.union1d,
-            (entries_along_row, entries_along_column, entries_within_3x3)))
+        invalid_entries = list(reduce(np.union1d, (entries_along_row,
+            entries_along_column, entries_within_3x3)))
         return invalid_entries
 
     def update(self, state, option_table, x, y, v):
@@ -195,8 +200,7 @@ if __name__ == '__main__':
     data = np.zeros(shape=(9, 9))
     for i, row_str in zip(range(9), table_data_str):
         data[i] = np.array(map(int, row_str.strip().split(' ')))
-    log.info('Input data: %s', table_data_str)
-    print(data)
+    log.info('Input board: \n%s', utils.get_pretty_board(data))
 
     solver = Search(SudokuSolver())
     solver.search(data)

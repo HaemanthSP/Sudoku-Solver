@@ -1,4 +1,9 @@
+# Built-in modules
 import logging
+
+# Local modules
+import utils
+
 
 class DecisionTree(object):
     '''
@@ -32,8 +37,7 @@ class Search(object):
 
         if possible_states is None:
             self.solutions.append(state)
-            self.log.info('Found Solution')
-            print(state)
+            self.log.info('Solution: \n%s', utils.get_pretty_board(state))
             return
 
         # Explore the possible states
