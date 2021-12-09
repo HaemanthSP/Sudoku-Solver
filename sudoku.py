@@ -81,7 +81,7 @@ class SudokuSolver(object):
 
                 uniq_locs = np.where(np.sum(square, axis=1) == 1)[0]
                 for l in uniq_locs:
-                    xid = (x*3)+(l/3)
+                    xid = (x*3)+(l//3)
                     yid = (y*3)+(l % 3)
                     value = np.where(option_table[xid][yid] == 1)[0][0] + 1
                     new_data, option_table = self.update(
@@ -90,7 +90,7 @@ class SudokuSolver(object):
                 uniq_vals = np.where(np.sum(square, axis=0) == 1)[0]
                 for v in uniq_vals:
                     idx = np.where(square[:, v] == 1)[0][0]
-                    xid = (x*3)+(idx/3)
+                    xid = (x*3)+(idx//3)
                     yid = (y*3)+(idx % 3)
                     new_data, option_table = self.update(
                             new_data, option_table, xid, yid, v+1)
@@ -103,8 +103,7 @@ class SudokuSolver(object):
         '''
         entries_along_row = state[:, y]
         entries_along_column = state[x, :]
-        entries_within_3x3 = state[(x/3)*3:((x/3)+1)*3,
-                (y/3)*3:((y/3)+1)*3].flatten()
+        entries_within_3x3 = state[(x//3)*3:((x//3)+1)*3, (y//3)*3:((y//3)+1)*3].flatten()
         invalid_entries = list(reduce(np.union1d, (entries_along_row,
             entries_along_column, entries_within_3x3)))
         return invalid_entries
@@ -152,7 +151,6 @@ class SudokuSolver(object):
             self.log.debug("Invalid state in board")
         return options_one_hot
     
-    
     def get_option_table(self, state):
         '''
         Populates the entire table with all possible moves at each empty cell
@@ -165,7 +163,6 @@ class SudokuSolver(object):
                 else:
                     option_table[x, y] = self.get_possible_moves(x, y, state)
         return option_table
-
 
     def next_moves(self, option_table):
         '''

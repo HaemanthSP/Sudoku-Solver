@@ -14,7 +14,9 @@ def read_input_from_file(file_name):
         table_data_str = input_file.readlines()
     data = np.zeros(shape=(9, 9))
     for i, row_str in zip(range(9), table_data_str):
-        data[i] = np.array(map(int, row_str.strip().split(' ')))
+        clean_str = row_str.strip().split(' ')
+        int_list = list(map(int, clean_str))
+        data[i] = np.array(int_list)
     return data
 
 
