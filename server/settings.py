@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#1ly^+yx7@+&izk7s@u#mh^x@(2*u6h%7i2og!wd062d%@-es2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sudoker.apps.SudokerConfig',
 ]
 
 MIDDLEWARE = [
