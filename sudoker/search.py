@@ -31,21 +31,19 @@ class Search(object):
         self.solutions = []
         self.log = logging.getLogger('Search')
 
-    def search(self, state, previous_decision=DecisionTree(), solutions=[]):
+    def search(self, state, previous_decision=DecisionTree()):
         state, possible_states, is_valid = self.Solver.solve(state)
 
         if not is_valid:
-            return None
+            return
 
         if possible_states is None:
             self.solutions.append(state)
             self.log.info('Solution: \n%s', utils.get_pretty_board(state))
-            return state
+            self.solutions.append(state)
+            return
 
         # Explore the possible states
         for chosen_state in possible_states:
             current_decision = DecisionTree(chosen_state, previous_decision)
-            solution = self.search(chosen_state, current_decision)
-            if type(solution) == numpy.ndarray:
-                solutions.append(solution)
-        return solutions
+            self.search(chosen_state, current_decision)
